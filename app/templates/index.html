@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>It's Pong like Donkey Kong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="static/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/creative.css?version=1" type="text/css">
+    
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top">
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1>ItsPong</h1>
+                <hr>
+                <p>Find people nearby who are interested in playing Ping Pong!</p>
+                <!--<a href="{{ url_for('findGame') }}" class="btn btn-primary btn-xl page-scroll">Find Games</a>-->
+
+                  <!-- Trigger the modal with a button -->
+                  <button type="button" class="btn btn-primary btn-xl page-scroll" data-toggle="modal" data-target="#myModal">Find Games</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Login with</h4>
+            </div>
+            <div class="modal-body">
+              <a href="{{ url_for('fb_login') }}" class='login-button facebook'><span class="fa fa-facebook-official"></span>  Facebook</a>
+              <br>
+              <a href="{{ url_for('g_login') }}" class='login-button google'><span class="fa fa-google"></span>  Google</a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">How it Works</h2>
+                    <hr class="light">
+                    <p class="text-faded">Challenge players by pressing <span class="fa fa-check-circle fa-1x"></span></p>
+
+                    <p class="text-faded">Press <span class="fa fa-times-circle fa-1x"></span> to preemptively admit defeat</p>
+                    
+                    <p class="text-faded">Contact information will be shared once a challenge is accepted</p>
+
+                    <p class="text-faded">Reach out to your opponent and set up a time and place for your match</p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Contact</h2>
+                    <hr class="primary">
+                    <p>Let me know if you have any suggestions!</p>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
+                    <p>yujinjcho@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/wow.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
+
+</body>
+
+</html>

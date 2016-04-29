@@ -1,0 +1,56 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Register</title>
+</head>
+<body id="registerbackground">
+	{% extends "layout_nobar.html" %}
+	{% block content %}
+
+		<div class="container-fluid register">
+			<h1>Register</h1>
+			<br>
+			<form>
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Email address</label>
+			    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			  </div>
+			  <div class="form-group">
+			    <label for="TOUPDATE">Password</label>
+			    <input type="password" class="form-control" id="TOUPDATE" placeholder="Password">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="TOUPDATE">Confirm Password</label>
+			    <input type="password" class="form-control" id="TOUPDATE" placeholder="Password">
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="TOUPDATE">Location</label>
+			    <input type="text" class="form-control" id="TOUPDATE" placeholder="Zip, city, or address">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="TOUPDATE">Shareable Contact</label>
+			    <input type="text" class="form-control" id="TOUPDATE" placeholder="Phone or email address">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="TOUPDATE">Description</label>
+			    <textarea class="form-control" id="TOUPDATE" placeholder="Something About Yourself"></textarea>
+			  </div>
+
+			  <div class="checkbox">
+			    <label>
+			      <input type="checkbox">Remember Me
+			    </label>
+			  </div>
+			  <button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			
+		</div>
+
+	{% endblock %}
+
+</body>
+</html>

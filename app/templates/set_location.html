@@ -1,0 +1,47 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Set Location (Step 1 of 2)</title>
+</head>
+<body id="registerbackground">
+	{% extends "layout_nobar.html" %}
+	{% block content %}
+
+		<div class="container-fluid register">
+			<h1>Set Location</h1>
+			<br>
+			<form method='POST'>
+			  <div class="form-group">
+			    <label for="profile">Location</label>
+			    
+			    
+			    <input name="address" type="text" class="form-control" placeholder="Zip, city, or street address">
+			  </div>
+
+				<button type="submit" class="btn btn-default">Verify Location</button>			  
+			</form>
+
+			<div>
+				{% if location %}
+					<div class="alert alert-info">
+						<strong>Is this your location?</strong>
+						<br>
+					  <div>{{ location.address }}</div>
+					  <br>
+					  <a class="btn btn-default btn-primary" href="{{ url_for('set_profile') }}">Confirm Location</a>
+					</div>
+				{% endif %}
+
+				{% if location == None %}
+					<div class="alert alert-danger">
+					  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter a valid location.
+					</div>
+				{% endif %}
+			</div>	
+
+			
+		</div>
+	{% endblock %}
+
+</body>
+</html>

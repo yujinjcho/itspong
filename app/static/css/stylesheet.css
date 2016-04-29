@@ -1,0 +1,133 @@
+.userfullname {
+	font-weight: Bold;
+}
+
+#registerbackground {
+	background: #EEEEEE;
+}
+
+.register {
+	width: 500px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: white;
+}
+/*
+.profilepic {
+	border: 1px solid rgba(150, 150, 150, 1);
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+}
+
+.user-profile {
+	display: inline-block;
+}
+
+.column-divider {
+	display: inline-block;
+	width: 10px;
+}
+
+*/
+
+
+
+.container {
+	width: 530px;
+	text-align: center;
+	margin: 20px auto;
+	
+}
+
+.profile-container {
+	border: 1px solid rgba(220,220,220,1);	
+	margin: 10px 0px;
+	height: 150px;
+	background: rgba(255,255,255,1);
+
+}
+
+.profile-pic {
+	
+	height:120px;
+	width: 120px;
+	margin: 13px 10px 0px 10px;
+	display: inline-block;
+}
+
+.profile-desc {
+	/*
+	border: 1px solid gray;		
+	*/
+	height:120px;
+	width: 350px;
+	margin: 13px 0px 0px 0px;
+	display: inline-block;
+	position: relative;
+	text-align: left
+}
+
+.chal-yes {
+	
+	margin-top: 12px;
+	height:40px;
+	width: 40px;
+	right: 10px;
+	position: absolute;
+	
+}
+
+.chal-no {
+	
+	margin-top: 65px;
+	height:40px;
+	width: 40px;	
+	position: absolute;
+	right: 10px;
+}
+
+.name {
+	font-weight: bold;
+	
+	height: 20px;
+	width: 250px;
+	position: absolute;
+	margin-top: 10px;
+}
+
+.location {
+	
+	height: 20px;
+	width: 250px;
+	position: absolute;
+	margin-top: 35px;
+}
+
+.description {
+	
+	height: 50px;
+	width: 250px;
+	position: absolute;
+	margin-top: 60px;
+	font-size: 13;
+}
+
+
+
+#user1 {
+	background-image: url("user1.JPG");
+	background-size: 100%
+}
+
+.glyphicon-ok-sign {
+	font-size: 1.5em;
+}
+
+.glyphicon-remove-sign {
+	font-size: 1.5em;	
+}
+
+.find-bg {
+	background: rgba(240,240,240,1);	
+}
