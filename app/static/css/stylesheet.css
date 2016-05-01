@@ -12,6 +12,9 @@
 	margin-bottom: 20px;
 	background: white;
 }
+
+
+
 /*
 .profilepic {
 	border: 1px solid rgba(150, 150, 150, 1);
@@ -49,11 +52,11 @@
 }
 
 .profile-pic {
-	
 	height:120px;
 	width: 120px;
 	margin: 13px 10px 0px 10px;
 	display: inline-block;
+	background-size: 100%
 }
 
 .profile-desc {
@@ -69,22 +72,27 @@
 }
 
 .chal-yes {
-	
 	margin-top: 12px;
-	height:40px;
-	width: 40px;
+	height: 40px;
+	width: 50px;
 	right: 10px;
-	position: absolute;
-	
+	position: absolute;	
 }
 
 .chal-no {
-	
 	margin-top: 65px;
 	height:40px;
-	width: 40px;	
+	width: 50px;	
 	position: absolute;
 	right: 10px;
+}
+
+.contact-user {
+	margin-top: 12px;
+	height: 40px;
+	width: 50px;
+	right: 10px;
+	position: absolute;	
 }
 
 .name {
@@ -113,21 +121,44 @@
 	font-size: 13;
 }
 
-
+.wordwrap { 
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word;      /* IE */
+}
 
 #user1 {
 	background-image: url("user1.JPG");
-	background-size: 100%
+	
 }
 
 .glyphicon-ok-sign {
-	font-size: 1.5em;
+	font-size: 1.7em;
+	color: black;
+	line-height: 25px;
+
 }
 
 .glyphicon-remove-sign {
-	font-size: 1.5em;	
+	font-size: 1.7em;	
+	color: black;
+	line-height: 25px;
+}
+
+.glyphicon-user {
+	font-size: 1.7em;	
+	color: black;
+	display: block;
+	margin: 0 auto;
+	line-height: 25px;
 }
 
 .find-bg {
 	background: rgba(240,240,240,1);	
+}
+
+a:hover, a:visited, a:link, a:active {
+   text-decoration: none;
 }

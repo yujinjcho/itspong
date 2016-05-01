@@ -3,12 +3,12 @@ from flask_oauthlib.client import OAuthException
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
 from app import app, db, google, facebook
-from models import User, GeoUserTest
+from models import User, Matches, GeoUserTest
 from geocoder import distance
+from operator import itemgetter
 
 @app.route('/')
-def index():	
-	
+def index():		
 	if g.user:
 		return redirect(url_for('findGame'))
 	return render_template('index.html')
@@ -27,15 +27,37 @@ def createUser(me, auth_server_name):
 	db.session.add(new_user)
 	db.session.commit()
 
-#Facebook Login
 @app.route('/fb_login')
 def fb_login():
-	callback = url_for(
-		'facebook_authorized',
-		next=request.args.get('next') or request.referrer or None,
-		_external=True
-	)
-	return facebook.authorize(callback=callback)
+  return login('Facebook')
+
+@app.route('/g_login')
+def g_login():
+  return login('Google')
+
+@app.route('/login')
+def login(server_name):
+  if server_name == "Facebook":
+    callback = url_for(
+      'facebook_authorized',
+      next=request.args.get('next') or request.referrer or None,
+      _external=True
+    )
+    return facebook.authorize(callback=callback)
+
+  return google.authorize(callback=url_for('g_authorized', _external=True))
+
+def setUser(server_name, me):
+  user = User.query.filter_by(auth_server=server_name,auth_server_id=me.data['id']).first()
+  if user is None:
+    createUser(me, server_name)
+    user = User.query.filter_by(auth_server=server_name,auth_server_id=me.data['id']).first()
+    session['user_id'] = user.id
+    g.user = user.id
+    return redirect(url_for('set_location'))
+
+  session['user_id'] = user.id
+  return redirect(url_for('findGame'))
 
 @app.route('/login/fb_authorized')
 def facebook_authorized():
@@ -50,23 +72,12 @@ def facebook_authorized():
 
   session['oauth_token'] = (resp['access_token'], '')
   me = facebook.get('/me/?fields=email,picture,name,id')
-  user = User.query.filter_by(auth_server='Facebook',auth_server_id=me.data['id']).first()
-  
-  if user is None:
-    createUser(me, 'Facebook')
-    user = User.query.filter_by(auth_server='Facebook',auth_server_id=me.data['id']).first()
-    session['user_id'] = user.id
-    g.user = user.id
-    return redirect(url_for('set_location'))
-  
-  session['user_id'] = user.id
-  return redirect(url_for('findGame'))
+  return setUser('Facebook', me)
 
 @facebook.tokengetter
 def get_facebook_oauth_token():
     return session.get('oauth_token')
 
-#Google Login
 @app.route('/login/g_authorized')
 def g_authorized():
   resp = google.authorized_response()
@@ -77,36 +88,11 @@ def g_authorized():
       )
   session['google_token'] = (resp['access_token'], '')
   me = google.get('userinfo')
-  user = User.query.filter_by(auth_server='Google',auth_server_id=me.data['id']).first()
-  if user is None:
-    createUser(me, 'Google')
-    user = User.query.filter_by(auth_server='Google',auth_server_id=me.data['id']).first()
-    session['user_id'] = user.id
-    g.user = user.id
-    return redirect(url_for('set_location'))
-
-  session['user_id'] = user.id
-  return redirect(url_for('findGame'))
-
-@app.route('/g_login')
-def g_login():
-	return google.authorize(callback=url_for('g_authorized', _external=True))
+  return setUser('Google', me)
 
 @google.tokengetter
 def get_google_oauth_token():
     return session.get('google_token')
-
-@app.route('/find')
-def findGame():
-	return render_template('find.html')
-
-@app.route('/challenges')
-def challenges():
-	return render_template('challenges.html')
-
-@app.route('/accepted')
-def accepted():
-	return render_template('accepted.html')
 
 @app.route('/set_location', methods=['GET', 'POST'])
 def set_location():
@@ -128,7 +114,7 @@ def set_location():
 def set_profile():
   if request.method == 'POST':
     user = User.query.filter_by(id=session['user_id']).first()
-    user.distance = request.form['distance']
+    user.dist_apart = request.form['distance']
     user.contact = request.form['contact']
     user.about_me = request.form['description']
     user.loc_input = session['user_loc_input']
@@ -149,39 +135,132 @@ def logout():
 def get_current_user():
 	g.user = session.get('user_id', None)
 
-
-#GEOCODE DISTANCE TESTING
-@app.route('/create_geo_user')
-def create_geo_user():
-  geo_user = GeoUserTest(latitude="38" , longitude="121" )
-  db.session.add(geo_user)
-
-  geo_user2 = GeoUserTest(latitude="39" , longitude="122" )
-  db.session.add(geo_user2)
-
-  geo_user3 = GeoUserTest(latitude="40" , longitude="123" )
-  db.session.add(geo_user3)
-
-  db.session.commit()
-  return 'geo user created'
-
-@app.route('/find_distance')
-def find_distance():
-  my_distance = (37.3897202, -122.0941618)
-  radius = 20
+@app.route('/find')
+def findGame():
   users = User.query.all()
+  current_user = User.query.filter_by(id=session['user_id']).first()
   
-  
-  #users = db.session.query(User).all()
-  
-  distances = [dict([
+  current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))
+  matches = [match.challenged_id for match in current_matches if match.challenger_id == session['user_id']] + \
+            [match.challenger_id for match in current_matches if match.challenged_id == session['user_id']]
+
+  players = [dict([
                     ("id", user.id),
-                    #("dist_apart", distance(my_distance, (user.loc_latitude, user.loc_longitude))),
-                    ("dist_apart", "%.1f" % vincenty(my_distance, (user.loc_latitude, user.loc_longitude)).miles),
+                    ("dist_apart", vincenty((current_user.loc_latitude, current_user.loc_longitude), (user.loc_latitude, user.loc_longitude)).miles),
                     ("bio", user.about_me),
+                    ("pic", user.profile_pic),
                     ("name", user.name),
                     ("contact", user.contact),
-                    ]) for user in users if vincenty(my_distance, (user.loc_latitude, user.loc_longitude)).miles < 20 if user.id != session['user_id']]
+                    ]) for user in users 
+                        if vincenty((current_user.loc_latitude, current_user.loc_longitude), (user.loc_latitude, user.loc_longitude)).miles < current_user.dist_apart 
+                        if user.id != current_user.id
+                        if user.id not in matches]
 
-  #return 'no error'
-  return jsonify(distances[0])
+  sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
+  return render_template("find.html", players=sorted_players, state="find")
+
+@app.route('/update_find/<int:user>/<string:action>')
+def update_find(user, action):
+  new_match = Matches(challenger_id=session['user_id'],
+                      challenger_action=action,
+                      challenged_id=user)
+  db.session.add(new_match)
+  db.session.commit()
+  return redirect(url_for('findGame'))
+
+@app.route('/update_challenge/<int:user>/<string:action>')
+def update_challenge(user, action):
+  match = Matches.query.filter(Matches.challenged_id==session['user_id'],Matches.challenger_id==user).first()
+
+  if action == "True":
+    match.challenged_action = True
+  else:
+    match.challenged_action = False
+  
+  db.session.commit()
+  return redirect(url_for('challenges'))
+
+@app.route('/challenges')
+def challenges():
+  users = User.query.all()
+  current_user = User.query.filter_by(id=session['user_id']).first()
+  current_matches = Matches.query.filter(Matches.challenged_id==session['user_id'])
+  matches = [match.challenger_id for match in current_matches 
+                                  if match.challenger_action == True
+                                  if match.challenged_action == None]
+  players = [dict([
+                    ("id", user.id),
+                    ("dist_apart", vincenty((current_user.loc_latitude, current_user.loc_longitude), (user.loc_latitude, user.loc_longitude)).miles),
+                    ("bio", user.about_me),
+                    ("pic", user.profile_pic),
+                    ("name", user.name),
+                    ("contact", user.contact),
+                    ]) for user in users 
+                        #if user.id != current_user.id
+                        if user.id in matches]
+
+  sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
+  return render_template("find.html", players=sorted_players, state="challenges")
+
+
+@app.route('/accepted')
+def accepted():
+  users = User.query.all()
+  current_user = User.query.filter_by(id=session['user_id']).first()
+  current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))
+
+  matches = [match.challenger_id for match in current_matches 
+                                  if match.challenger_action == True
+                                  if match.challenged_action == True]
+  players = [dict([
+                    ("id", user.id),
+                    ("dist_apart", vincenty((current_user.loc_latitude, current_user.loc_longitude), (user.loc_latitude, user.loc_longitude)).miles),
+                    ("bio", user.about_me),
+                    ("pic", user.profile_pic),
+                    ("name", user.name),
+                    ("contact", user.contact),
+                    ]) for user in users 
+                        if user.id in matches]
+
+  sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
+  return render_template("find.html", players=sorted_players, state="accepted")
+
+
+#CREATE TEST USERS
+@app.route('/create_test_user')
+def create_test_user():
+  test_user = User(
+                  auth_server="test",
+                  auth_server_id=1,
+                  name='c',
+                  email='c',
+                  loc_latitude='37.3082567',
+                  loc_longitude='-122.2126541',
+                  about_me="Hello I am a person Hello I am a personHello I am a personHello I am a personHello I am a personHell",
+                  profile_pic='https://lh5.googleusercontent.com/-DTsx6olRHB8/AAAAAAAAAAI/AAAAAAAAADY/e4nE2R-t9Zk/photo.jpg'
+                   )
+  db.session.add(test_user)
+  db.session.commit()
+
+  return 'test user created'
+
+@app.route('/test_action/<string:variable>/<string:var2>')
+def test_action(variable, var2):
+  return 'hi'
+
+
+@app.route('/url_for')
+def url_for_test():
+  return redirect(url_for('test_action', variable='hi', var2="hello"))
+
+@app.route('/create_test_match')
+def create_test_match():
+  new_match = Matches(challenger_id=12,
+                      challenger_action=True,
+                      challenged_id=10,
+                      challenged_action=True,)
+  db.session.add(new_match)
+  db.session.commit()  
+
+  return 'test matches created'
+

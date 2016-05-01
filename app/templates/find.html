@@ -7,75 +7,58 @@
 	{% extends "layout.html" %}
 	{% block content %}
 
-		<div class="container">
+	<div class="container">
 
-		<div class="profile-container">
-			<div class="profile-pic" id="user1"></div>
-			<div class="profile-desc">
-				<div class="name">Yujin Cho</div>
-				<div class="location">Distance: 4 miles</div>
-				<div class="description">I like playing ping pong. I used to play all the time in college.</div>
-				<button type="button" class="chal-yes"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></button>
-				<button type="button" class="chal-no"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-			</div>
-		</div>
+	{% for player in players %}
+	
+		<form>
+			<div class="profile-container" name="each-profile" value="{{ player.id }}">
+				<div class="profile-pic" style="background-image: url('{{ player.pic }}');"></div>
+				<div class="profile-desc">
+					<div class="name">{{ player.name }}</div>
+					<div class="location">Distance: {{ "%.1f" % player.dist_apart }} miles</div>
+					<div class="description wordwrap">{{ player.bio }}</div>
 
-		<div class="profile-container">
-			<div class="profile-pic" id="user1"></div>
-			<div class="profile-desc">
-				<div class="name">Yujin Cho</div>
-				<div class="location">Distance: 4 miles</div>
-				<div class="description">I like playing ping pong. I used to play all the time in college.</div>
-				<button type="button" class="chal-yes"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></button>
-				<button type="button" class="chal-no"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-			</div>
-		</div>
+					{% if state == "find" %}
+		      <a class="chal-yes btn btn-default" href="{{ url_for('update_find', user=player.id, action=True) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
+					<a class="chal-no btn btn-default" href="{{ url_for('update_find', user=player.id, action=False) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>  	
+		      {% endif %}
 
-		<div class="profile-container">
-			<div class="profile-pic" id="user1"></div>
-			<div class="profile-desc">
-				<div class="name">Yujin Cho</div>
-				<div class="location">Distance: 4 miles</div>
-				<div class="description">I like playing ping pong. I used to play all the time in college.</div>
-				<button type="button" class="chal-yes"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></button>
-				<button type="button" class="chal-no"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-			</div>
-		</div>
+					{% if state == "challenges" %}
+					<a class="chal-yes btn btn-default" href="{{ url_for('update_challenge', user=player.id, action=True) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
+					<a class="chal-no btn btn-default" href="{{ url_for('update_challenge', user=player.id, action=False) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+					{% endif %}
 
-		<div class="profile-container">
-			<div class="profile-pic" id="user1"></div>
-			<div class="profile-desc">
-				<div class="name">Yujin Cho</div>
-				<div class="location">Distance: 4 miles</div>
-				<div class="description">I like playing ping pong. I used to play all the time in college.</div>
-				<button type="button" class="chal-yes"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></button>
-				<button type="button" class="chal-no"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-			</div>
-		</div>
+					{% if state == "accepted" %}
+					<!-- <a class="contact-user btn btn-default" href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a> -->
+					<button type="button" class="contact-user btn btn-default btn-xl page-scroll" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>
 
-		<div class="profile-container">
-			<div class="profile-pic" id="user1"></div>
-			<div class="profile-desc">
-				<div class="name">Yujin Cho</div>
-				<div class="location">Distance: 4 miles</div>
-				<div class="description">I like playing ping pong. I used to play all the time in college.</div>
-				<button type="button" class="chal-yes"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></button>
-				<button type="button" class="chal-no"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-			</div>
-		</div>
+					<!-- Modal -->
+					  <div class="modal fade" id="myModal" role="dialog">
+					    <div class="modal-dialog modal-sm">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <button type="button" class="close" data-dismiss="modal">&times;</button>
+					          <h4 class="modal-title">Contact Info</h4>
+					        </div>
+					        <div class="modal-body">  
+					          <p> {{ player.contact }} </p>
+					        </div>
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					{% endif %}
 
-		<div class="profile-container">
-			<div class="profile-pic" id="user1"></div>
-			<div class="profile-desc">
-				<div class="name">Yujin Cho</div>
-				<div class="location">Distance: 4 miles</div>
-				<div class="description">I like playing ping pong. I used to play all the time in college.</div>
-				<button type="button" class="chal-yes"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></button>
-				<button type="button" class="chal-no"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
+
+					
+				</div>
 			</div>
-		</div>
+		</form>		  	
 		
-		
+	{% endfor %}	
 
 	</div>
 
