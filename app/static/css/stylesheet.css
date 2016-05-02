@@ -15,26 +15,6 @@
 
 
 
-/*
-.profilepic {
-	border: 1px solid rgba(150, 150, 150, 1);
-	width: 50px;
-	height: 50px;
-	display: inline-block;
-}
-
-.user-profile {
-	display: inline-block;
-}
-
-.column-divider {
-	display: inline-block;
-	width: 10px;
-}
-
-*/
-
-
 
 .container {
 	width: 530px;
@@ -162,3 +142,4 @@
 a:hover, a:visited, a:link, a:active {
    text-decoration: none;
 }
+

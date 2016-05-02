@@ -31,10 +31,10 @@
 
 					{% if state == "accepted" %}
 					<!-- <a class="contact-user btn btn-default" href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a> -->
-					<button type="button" class="contact-user btn btn-default btn-xl page-scroll" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>
+					<button type="button" class="contact-user btn btn-default btn-xl page-scroll" data-toggle="modal" data-target="#myModal{{ player.id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>
 
 					<!-- Modal -->
-					  <div class="modal fade" id="myModal" role="dialog">
+					  <div class="modal fade" id="myModal{{ player.id }}" role="dialog">
 					    <div class="modal-dialog modal-sm">
 					      <div class="modal-content">
 					        <div class="modal-header">

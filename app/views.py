@@ -208,10 +208,15 @@ def accepted():
   users = User.query.all()
   current_user = User.query.filter_by(id=session['user_id']).first()
   current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))
-
-  matches = [match.challenger_id for match in current_matches 
+  matches = [match.challenged_id for match in current_matches 
+                                  if match.challenger_id == session['user_id']
+                                  if match.challenger_action == True
+                                  if match.challenged_action == True] + \
+            [match.challenger_id for match in current_matches 
+                                  if match.challenged_id == session['user_id']
                                   if match.challenger_action == True
                                   if match.challenged_action == True]
+
   players = [dict([
                     ("id", user.id),
                     ("dist_apart", vincenty((current_user.loc_latitude, current_user.loc_longitude), (user.loc_latitude, user.loc_longitude)).miles),
