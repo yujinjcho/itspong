@@ -292,4 +292,3 @@ def create_test_match():
   db.session.commit()  
 
   return 'test matches created'
-
