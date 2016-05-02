@@ -95,7 +95,8 @@ def get_google_oauth_token():
     return session.get('google_token')
 
 @app.route('/set_location', methods=['GET', 'POST'])
-def set_location():
+@app.route('/set_location/<string:set_type>', methods=['GET', 'POST'])
+def set_location(set_type=None):
   if request.method == 'POST':
     input_location = request.form['address']
     geolocator = Nominatim()
@@ -106,12 +107,25 @@ def set_location():
       session['user_long'] = location.longitude      
     except:
       location = None
+    
+    if set_type == "update":
+      return render_template('set_location.html', location=location, type="update")
+
     return render_template('set_location.html', location=location)
+
+  if set_type == "update":
+    current_user = User.query.filter_by(id=session['user_id']).first()
+    return render_template('set_location.html', type="update", current_loc=current_user.loc_input)
   
   return render_template('set_location.html')
 
+@app.route('/update_location')
+def update_location():
+  return redirect(url_for("set_location", set_type="update"))
+
 @app.route('/set_profile', methods=['GET', 'POST'])
-def set_profile():
+@app.route('/set_profile/<string:set_type>', methods=['GET', 'POST'])
+def set_profile(set_type=None):
   if request.method == 'POST':
     user = User.query.filter_by(id=session['user_id']).first()
     user.dist_apart = request.form['distance']
@@ -123,7 +137,17 @@ def set_profile():
     db.session.commit()
     return redirect(url_for('findGame'))
 
+  if set_type == "update":
+    current_user = User.query.filter_by(id=session['user_id']).first()
+    return render_template('set_profile.html', type="update", distance=current_user.dist_apart, contact=current_user.contact, description=current_user.about_me)
+
   return render_template('set_profile.html')
+
+@app.route('/update_profile')
+def update_profile():
+  #current_user = User.query.filter_by(id=session['user_id']).first()
+  #return render_template('set_profile.html', type="update", distance=current_user.dist_apart, contact=current_user.contact, description=current_user.about_me)
+  return redirect(url_for("set_profile", set_type="update"))
 
 @app.route('/logout')
 def logout():

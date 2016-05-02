@@ -9,6 +9,10 @@
 
 	<div class="container">
 
+	{% if players|length == 0 %}
+	<p>Currently no users fitting this criteria</p>
+	{% endif %}
+
 	{% for player in players %}
 	
 		<form>

@@ -14,22 +14,46 @@
 			<form method="POST">
 			  <div class="form-group">
 			    <label>Search Radius</label>
-			    <input name="distance" type="number" min=1 max=200 class="form-control" placeholder="miles 1-200">
+			    
+			    {% if type=="update" %}
+			    <input name="distance" type="number" min=1 max=200 class="form-control" placeholder="miles 1-200" value="{{ distance }}">
+			    {% endif %}
+
+			    {% if not type %}
+					<input name="distance" type="number" min=1 max=200 class="form-control" placeholder="miles 1-200">
+			    {% endif %}
 			  </div>
 
 			  <div class="form-group">
 			    <label>Contact to share (Only shared when you approve an opponent)</label>
-			    <input name="contact" type="text" class="form-control" placeholder="Phone or email address">
+			    
+			    {% if type=="update" %}
+			    <input name="contact" type="text" class="form-control" placeholder="Phone or email address" value="{{ contact }}">
+			    {% endif %}
+
+			    {% if not type %}
+					<input name="contact" type="text" class="form-control" placeholder="Phone or email address">
+			    {% endif %}
 			  </div>
 
 			  <div class="form-group">
 			    <label>Description</label>
-			    <textarea name="description" id="about-me" class="form-control" placeholder="Something About Yourself" maxlength="100"></textarea>
+			    
+			    {% if type=="update" %}
+			    <textarea name="description" id="about-me" class="form-control" placeholder="Something About Yourself" maxlength="100">{{ description }}</textarea>
+			    {% endif %}
+
+					{% if not type %}
+					<textarea name="description" id="about-me" class="form-control" placeholder="Something About Yourself" maxlength="100"></textarea>
+					{% endif %}
 			  </div>
 			  
 			  <button type="submit" class="btn btn-default">Submit</button>
 			</form>	
 		</div>
+
+
+
 
 	{% endblock %}
 

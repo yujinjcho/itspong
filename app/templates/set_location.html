@@ -14,8 +14,14 @@
 			  <div class="form-group">
 			    <label for="profile">Location</label>
 			    
-			    
+			    {% if not type %}
 			    <input name="address" type="text" class="form-control" placeholder="Zip, city, or street address">
+			  	{% endif %}  
+
+			  	{% if type=="update" %}
+					<input name="address" type="text" class="form-control" placeholder="Zip, city, or street address" value="{{ current_loc }}">
+			  	{% endif %}  
+
 			  </div>
 
 				<button type="submit" class="btn btn-default">Verify Location</button>			  
@@ -28,7 +34,14 @@
 						<br>
 					  <div>{{ location.address }}</div>
 					  <br>
+					  
+					  {% if not type %}
 					  <a class="btn btn-default btn-primary" href="{{ url_for('set_profile') }}">Confirm Location</a>
+					  {% endif %}
+
+					  {% if type=="update" %}
+					  <a class="btn btn-default btn-primary" href="{{ url_for('update_profile') }}">Confirm Location</a>
+					  {% endif %}
 					</div>
 				{% endif %}
 
