@@ -128,13 +128,20 @@ def update_location():
 def set_profile(set_type=None):
   if request.method == 'POST':
     user = User.query.filter_by(id=session['user_id']).first()
-    user.dist_apart = request.form['distance']
-    user.contact = request.form['contact']
-    user.about_me = request.form['description']
-    user.loc_input = session['user_loc_input']
-    user.loc_latitude = session['user_lat']
-    user.loc_longitude = session['user_long']
-    db.session.commit()
+    
+    try:
+      user.dist_apart = request.form['distance']
+      user.contact = request.form['contact']
+      user.about_me = request.form['description']
+      user.loc_input = session['user_loc_input']
+      user.loc_latitude = session['user_lat']
+      user.loc_longitude = session['user_long']
+      db.session.commit()
+    except:
+      if set_type == "update":
+        return render_template('set_profile.html', type="update", distance=current_user.dist_apart, contact=current_user.contact, description=current_user.about_me)
+      return render_template('set_profile.html')
+      
     return redirect(url_for('findGame'))
 
   if set_type == "update":
