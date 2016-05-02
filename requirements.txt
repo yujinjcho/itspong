@@ -9,6 +9,7 @@ geodis==2.0.9
 geohasher==0.1.dev0
 geopy==1.11.0
 googlemaps==2.4.3
+gunicorn==19.4.5
 itsdangerous==0.24
 Jinja2==2.8
 lxml==3.6.0
