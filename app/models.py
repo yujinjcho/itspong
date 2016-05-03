@@ -15,9 +15,9 @@ class User(db.Model):
   loc_input = db.Column(db.String, default=None)
   loc_latitude = db.Column(db.String, default=None)
   loc_longitude = db.Column(db.String, default=None)
-  dist_apart = db.Column(db.Integer, default=None)
-  contact = db.Column(db.String, default=None)
-  about_me = db.Column(db.String(200), default='About Me')
+  dist_apart = db.Column(db.Integer, default=50)
+  contact = db.Column(db.String, default="Not provided :(")
+  about_me = db.Column(db.String(200), default='I like ping pong!')
   profile_pic = db.Column(db.String)
 
 class Matches(db.Model):
