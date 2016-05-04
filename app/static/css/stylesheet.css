@@ -36,7 +36,7 @@
 	width: 120px;
 	margin: 13px 10px 0px 10px;
 	display: inline-block;
-	background-size: 100%
+	background-size: cover;
 }
 
 .profile-desc {
