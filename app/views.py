@@ -73,7 +73,7 @@ def facebook_authorized():
       return 'Access denied: %s' % resp.message
 
   session['oauth_token'] = (resp['access_token'], '')
-  me = facebook.get('/me/?fields=email,name,id,picture.height(200)')
+  me = facebook.get('/me/?fields=email,name,id,picture.height(200).width(200)')
   return setUser('Facebook', me)
 
 @facebook.tokengetter
