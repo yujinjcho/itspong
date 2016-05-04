@@ -53,12 +53,10 @@ def setUser(server_name, me):
     createUser(me, server_name)
     user = User.query.filter_by(auth_server=server_name,auth_server_id=me.data['id']).first()
     session['user_id'] = user.id
-    session['user_name'] = user.name
     g.user = user.id
     return redirect(url_for('set_location'))
 
   session['user_id'] = user.id
-  session['user_name'] = user.name
   return redirect(url_for('findGame'))
 
 @app.route('/login/fb_authorized')
@@ -154,12 +152,13 @@ def set_profile(set_type=None):
 
 @app.route('/update_profile')
 def update_profile():
+  #current_user = User.query.filter_by(id=session['user_id']).first()
+  #return render_template('set_profile.html', type="update", distance=current_user.dist_apart, contact=current_user.contact, description=current_user.about_me)
   return redirect(url_for("set_profile", set_type="update"))
 
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
-    session.pop('user_name', None)
     g.user == None
     return redirect(url_for('index'))
 
@@ -189,7 +188,7 @@ def findGame():
                         if user.id not in matches]
 
   sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
-  return render_template("find.html", players=sorted_players, state="find", name=session['user_name'])
+  return render_template("find.html", players=sorted_players, state="find")
 
 @app.route('/update_find/<int:user>/<string:action>')
 def update_find(user, action):
@@ -232,7 +231,7 @@ def challenges():
                         if user.id in matches]
 
   sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
-  return render_template("find.html", players=sorted_players, state="challenges", name=session['user_name'])
+  return render_template("find.html", players=sorted_players, state="challenges")
 
 
 @app.route('/accepted')
@@ -260,7 +259,7 @@ def accepted():
                         if user.id in matches]
 
   sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
-  return render_template("find.html", players=sorted_players, state="accepted", name=session['user_name'])
+  return render_template("find.html", players=sorted_players, state="accepted")
 
 
 #CREATE TEST USERS
