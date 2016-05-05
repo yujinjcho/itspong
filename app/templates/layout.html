@@ -10,7 +10,7 @@
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
-  <link rel="stylesheet" type="text/css" href="/static/css/stylesheet.css?version=80">
+  <link rel="stylesheet" type="text/css" href="/static/css/stylesheet.css?version=81">
 
 
 
@@ -33,24 +33,22 @@
 
         
         <ul class="nav navbar-nav">
-          
+          {% if g.user %}
           <li><a href="{{ url_for('find_game') }}">Find Games</a></li>
           <li><a href="{{ url_for('challenges') }}">Challenges</a></li>
           <li><a href="{{ url_for('accepted') }}">Accepted</a></li>
+          {% endif %}
         </ul>      
         
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ name }}<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <!--<li><a href="#">Profile</a></li>-->
-              <li><a href="{{ url_for('update_location') }}">Update Profile</a></li>
-              <!--
-              <li><a href="{{ url_for('update_profile') }}">Update Profile</a></li>
-              <li><a href="{{ url_for('set_location') }}">Update Profile</a></li>
-              -->
               
+              {% if g.user %}
+              <li><a href="{{ url_for('update_location') }}">Update Profile</a></li>
               <li role="separator" class="divider"></li>
+              {% endif %}
               <li><a href="{{ url_for('logout') }}">Log out</a></li>
               <!--
               <li role="separator" class="divider"></li>

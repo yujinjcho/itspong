@@ -35,12 +35,18 @@
 					  <div>{{ location.address }}</div>
 					  <br>
 					  
-					  {% if not type %}
-					  <a class="btn btn-default btn-primary" href="{{ url_for('set_profile') }}">Confirm Location</a>
+					  {% if g.user %}
+						  {% if not type %}
+						  <a class="btn btn-default btn-primary" href="{{ url_for('set_profile') }}">Confirm Location</a>
+						  {% endif %}
+
+						  {% if type=="update" %}
+						  <a class="btn btn-default btn-primary" href="{{ url_for('update_profile') }}">Confirm Location</a>
+						  {% endif %}
 					  {% endif %}
 
-					  {% if type=="update" %}
-					  <a class="btn btn-default btn-primary" href="{{ url_for('update_profile') }}">Confirm Location</a>
+					  {% if not g.user %}
+					  <a class="btn btn-default btn-primary" href="{{ url_for('view_players', latitude=location.latitude, longitude=location.longitude) }}">Confirm Location</a>
 					  {% endif %}
 					</div>
 				{% endif %}

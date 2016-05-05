@@ -180,6 +180,40 @@ def logout():
 def get_current_user():
 	g.user = session.get('user_id', None)
 
+@app.route('/set_guest_location', methods=['GET', 'POST'])
+def set_guest_location(set_type=None):
+  
+  if request.method == 'POST':
+    input_location = request.form['address']
+    geolocator = Nominatim()
+    try:
+      location = geolocator.geocode(input_location)
+    except:
+      location = None
+
+    return render_template('set_location.html', location=location)
+
+  return render_template('set_location.html')
+
+@app.route('/view_players/<string:latitude>/<string:longitude>')
+def view_players(latitude, longitude):
+  users = User.query.all()
+  players = [dict([
+                    ("id", user.id),
+                    ("dist_apart", vincenty((latitude, longitude), \
+                      (user.loc_latitude, user.loc_longitude)).miles),
+                    ("bio", user.about_me),
+                    ("pic", user.profile_pic),
+                    ("name", user.name[:1] + "."),
+                    ("contact", user.contact),
+                    ]) for user in users 
+                        if vincenty((latitude, longitude), \
+                          (user.loc_latitude, user.loc_longitude)).miles < 120]
+
+  sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
+  return render_template("find.html", players=sorted_players, state="find", name="Guest")
+
+
 @app.route('/find')
 @login_required
 def find_game():
