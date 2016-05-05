@@ -189,8 +189,8 @@ def find_game():
   
   current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))
   
-  matches = [match.challenged_id for match in current_matches if match.challenger_id == session['user_id']] + \
-            [match.challenger_id for match in current_matches if match.challenged_id == session['user_id']]
+  matches = [match.challenged_id for match in current_matches if match.challenger_id == int(session['user_id'])] + \
+            [match.challenger_id for match in current_matches if match.challenged_id == int(session['user_id'])]
 
   return ', '.join(str(x) for x in matches)
 
