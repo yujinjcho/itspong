@@ -181,7 +181,6 @@ def get_current_user():
 	g.user = session.get('user_id', None)
 
 @app.route('/find')
-@login_required
 def find_game():
 
   users = User.query.all()
