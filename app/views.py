@@ -1,4 +1,4 @@
-from flask import render_template, url_for, session, request, redirect, jsonify, g
+from flask import render_template, url_for, session, request, redirect, jsonify, g, flash
 from flask_oauthlib.client import OAuthException
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
@@ -191,13 +191,16 @@ def findGame():
   sorted_players = sorted(players, key=itemgetter('dist_apart'), reverse=False) 
   return render_template("find.html", players=sorted_players, state="find", name=session['user_name'])
 
-@app.route('/update_find/<int:user>/<string:action>')
-def update_find(user, action):
+@app.route('/update_find/<int:user>/<string:action>/<string:user_name>')
+def update_find(user, action, user_name):
   new_match = Matches(challenger_id=session['user_id'],
                       challenger_action=action,
                       challenged_id=user)
   db.session.add(new_match)
   db.session.commit()
+  if action == "True":
+    flash("Challenge request was sent to " + user_name + ". If your challenge is accepted, " + user_name + "'s contact information will appear on the Accepted tab.")
+
   return redirect(url_for('findGame'))
 
 @app.route('/update_challenge/<int:user>/<string:action>')

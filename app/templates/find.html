@@ -9,6 +9,14 @@
 
 	<div class="container">
 
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+	      <div class="alert alert-info">{{ message }}</div>
+	    {% endfor %}
+	  {% endif %}
+	{% endwith %}
+
 	{% if players|length == 0 %}
 	<p>Currently no users fitting this criteria</p>
 	{% endif %}
@@ -24,8 +32,8 @@
 					<div class="description wordwrap">{{ player.bio }}</div>
 
 					{% if state == "find" %}
-		      <a class="chal-yes btn btn-default" href="{{ url_for('update_find', user=player.id, action=True) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
-					<a class="chal-no btn btn-default" href="{{ url_for('update_find', user=player.id, action=False) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>  	
+		      <a class="chal-yes btn btn-default" href="{{ url_for('update_find', user=player.id, action=True, user_name=player.name) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
+					<a class="chal-no btn btn-default" href="{{ url_for('update_find', user=player.id, action=False, user_name=player.name) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>  	
 		      {% endif %}
 
 					{% if state == "challenges" %}
