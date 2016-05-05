@@ -191,6 +191,8 @@ def find_game():
   matches = [match.challenged_id for match in current_matches if match.challenger_id == session['user_id']] + \
             [match.challenger_id for match in current_matches if match.challenged_id == session['user_id']]
 
+  return str(len(matches))
+
   players = [dict([
                     ("id", user.id),
                     ("dist_apart", vincenty((current_user.loc_latitude, current_user.loc_longitude), \
