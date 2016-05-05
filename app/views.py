@@ -186,13 +186,10 @@ def find_game():
 
   users = User.query.all()
   current_user = User.query.filter_by(id=session['user_id']).first()
-  
-  current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))
-  
+
+  current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))  
   matches = [match.challenged_id for match in current_matches if match.challenger_id == int(session['user_id'])] + \
             [match.challenger_id for match in current_matches if match.challenged_id == int(session['user_id'])]
-
-  return ', '.join(str(x) for x in matches)
 
   players = [dict([
                     ("id", user.id),
@@ -270,11 +267,11 @@ def accepted():
   current_user = User.query.filter_by(id=session['user_id']).first()
   current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))
   matches = [match.challenged_id for match in current_matches 
-                                  if match.challenger_id == session['user_id']
+                                  if match.challenger_id == int(session['user_id'])
                                   if match.challenger_action == True
                                   if match.challenged_action == True] + \
             [match.challenger_id for match in current_matches 
-                                  if match.challenged_id == session['user_id']
+                                  if match.challenged_id == int(session['user_id'])
                                   if match.challenger_action == True
                                   if match.challenged_action == True]
 
