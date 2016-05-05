@@ -188,11 +188,11 @@ def find_game():
   current_user = User.query.filter_by(id=session['user_id']).first()
   
   current_matches = Matches.query.filter((Matches.challenger_id==session['user_id']) | (Matches.challenged_id==session['user_id']))
-  match_test = [match.id for match in current_matches]
-  return ', '.join(str(x) for x in match_test)
-
+  
   matches = [match.challenged_id for match in current_matches if match.challenger_id == session['user_id']] + \
             [match.challenger_id for match in current_matches if match.challenged_id == session['user_id']]
+
+  return ', '.join(str(x) for x in matches)
 
   players = [dict([
                     ("id", user.id),
