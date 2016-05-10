@@ -42,7 +42,7 @@
 				<div class="profile-desc">
 					<div class="name">{{ player.name }}</div>
 					<div class="location"><i>{{ "%.1f" % player.dist_apart }} miles away</i></div>
-					<div class="description wordwrap">{{ player.bio }}</div>
+					<div class="description wordwrap">{{ player.about_me }}</div>
 
 					{% if g.user.is_authenticated %}
 						{% if state == "find" %}
