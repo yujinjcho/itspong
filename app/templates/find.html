@@ -9,7 +9,7 @@
 
 	<div class="container">
 
-	{% if not g.user %}	
+	{% if not g.user.is_authenticated %}	
 	<div class="alert alert-info">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		Create account to challenge players 
@@ -19,7 +19,10 @@
 	{% with messages = get_flashed_messages() %}
 	  {% if messages %}
 	    {% for message in messages %}
-	      <div class="alert alert-info">{{ message }}</div>
+	      <div class="alert alert-info">
+	      	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	      	{{ message }}
+	      </div>
 	    {% endfor %}
 	  {% endif %}
 	{% endwith %}
@@ -35,21 +38,21 @@
 	
 		<form>
 			<div class="profile-container" name="each-profile" value="{{ player.id }}">
-				<div class="profile-pic" style="background-image: url('{{ player.pic }}');"></div>
+				<div class="profile-pic" style="background-image: url('{{ player.profile_pic }}');"></div>
 				<div class="profile-desc">
 					<div class="name">{{ player.name }}</div>
-					<div class="location">Distance: {{ "%.1f" % player.dist_apart }} miles</div>
+					<div class="location"><i>{{ "%.1f" % player.dist_apart }} miles away</i></div>
 					<div class="description wordwrap">{{ player.bio }}</div>
 
-					{% if g.user %}
+					{% if g.user.is_authenticated %}
 						{% if state == "find" %}
-			      <a class="chal-yes btn btn-default" href="{{ url_for('update_find', user=player.id, action=True, user_name=player.name) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
-						<a class="chal-no btn btn-default" href="{{ url_for('update_find', user=player.id, action=False, user_name=player.name) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>  	
+			      <a class="chal-yes btn btn-default" href="{{ url_for('update_find', user=player.id, action=1, user_name=player.name) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
+						<a class="chal-no btn btn-default" href="{{ url_for('update_find', user=player.id, action=0, user_name=player.name) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>  	
 			      {% endif %}
 
 						{% if state == "challenges" %}
-						<a class="chal-yes btn btn-default" href="{{ url_for('update_challenge', user=player.id, action=True) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
-						<a class="chal-no btn btn-default" href="{{ url_for('update_challenge', user=player.id, action=False) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+						<a class="chal-yes btn btn-default" href="{{ url_for('update_challenge', user=player.id, action=1) }}"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span></a>
+						<a class="chal-no btn btn-default" href="{{ url_for('update_challenge', user=player.id, action=0) }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
 						{% endif %}
 
 						{% if state == "accepted" %}

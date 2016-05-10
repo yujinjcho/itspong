@@ -12,8 +12,6 @@
 
   <link rel="stylesheet" type="text/css" href="/static/css/stylesheet.css?version=81">
 
-
-
 <body>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -25,15 +23,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <!-- <a class="navbar-brand" href="#">Find Games</a> -->
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-        
         <ul class="nav navbar-nav">
-          {% if g.user %}
+          {% if g.user.is_authenticated %}
           <li><a href="{{ url_for('find_game') }}">Find Games</a></li>
           <li><a href="{{ url_for('challenges') }}">Challenges</a></li>
           <li><a href="{{ url_for('accepted') }}">Accepted</a></li>
@@ -42,18 +38,14 @@
         
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ name }}<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ g.user.name or "Guest" }}<span class="caret"></span></a>
             <ul class="dropdown-menu">
               
-              {% if g.user %}
-              <li><a href="{{ url_for('update_location') }}">Update Profile</a></li>
+              {% if g.user.is_authenticated %}
+              <li><a href="{{ url_for('set_location', set_type='update') }}">Update Profile</a></li>
               <li role="separator" class="divider"></li>
               {% endif %}
               <li><a href="{{ url_for('logout') }}">Log out</a></li>
-              <!--
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Log Out</a></li>
-            -->
             </ul>
           </li>
         </ul>
