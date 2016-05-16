@@ -60,9 +60,9 @@
             <div class="modal-body">
               <a href="{{ url_for('set_guest_location') }}" class='login-button guest'>GUEST LOGIN</a>
               <hr>
-              <a href="{{ url_for('fb_login') }}" class='login-button facebook'><span class="fa fa-facebook-official"></span>  Facebook</a>
+              <a href="{{ url_for('login', server_name='Facebook') }}" class='login-button facebook'><span class="fa fa-facebook-official"></span>  Facebook</a>
               <br>
-              <a href="{{ url_for('g_login') }}" class='login-button google'><span class="fa fa-google"></span>  Google</a>
+              <a href="{{ url_for('login', server_name='Google') }}" class='login-button google'><span class="fa fa-google"></span>  Google</a>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>

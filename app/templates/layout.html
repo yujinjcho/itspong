@@ -44,7 +44,10 @@
               {% if g.user.is_authenticated %}
               <li><a href="{{ url_for('set_location', set_type='update') }}">Update Profile</a></li>
               <li role="separator" class="divider"></li>
+              {% else %}
+              <li><a href="{{ url_for('set_guest_location') }}">Update Location</a></li>
               {% endif %}
+              <li role="separator" class="divider"></li>
               <li><a href="{{ url_for('logout') }}">Log out</a></li>
             </ul>
           </li>

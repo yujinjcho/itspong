@@ -67,15 +67,7 @@ def set_user(server_name, me):
     login_user(user, remember=True)
     return redirect(url_for('find_game'))
 
-@app.route('/fb_login')
-def fb_login():
-    return login('Facebook')
-
-@app.route('/g_login')
-def g_login():
-    return login('Google')
-
-@app.route('/login')
+@app.route('/login/<string:server_name>')
 def login(server_name):
     if server_name == "Facebook":
         callback = url_for(
